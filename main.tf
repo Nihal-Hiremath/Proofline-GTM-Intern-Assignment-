@@ -56,9 +56,8 @@ resource "aws_db_instance" "orders" {
   username                    = "orders_app"
   manage_master_user_password = true
   vpc_security_group_ids      = [aws_security_group.db.id]
-  deletion_protection         = true
-  skip_final_snapshot         = false
-  final_snapshot_identifier   = "orders-db-final"
+  deletion_protection         = false
+  skip_final_snapshot         = true
 }
 
 resource "aws_ecs_cluster" "main" {
