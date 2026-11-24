@@ -65,6 +65,14 @@ resource "aws_ecs_cluster" "main" {
   name = "orders"
 }
 
+data "aws_secretsmanager_secret" "db_password" {
+  name = "orders/db-password"
+}
+
+data "aws_secretsmanager_secret" "db_password" {
+  name = "orders/db-password"
+}
+
 resource "aws_ecs_task_definition" "api" {
   family                   = "orders-api"
   requires_compatibilities = ["FARGATE"]
@@ -79,6 +87,9 @@ resource "aws_ecs_task_definition" "api" {
     environment = [
       { name = "DB_HOST", value = aws_db_instance.orders.address },
       { name = "DB_POOL_SIZE", value = "40" }
+    ]
+    secrets = [
+      { name = "DB_PASSWORD", valueFrom = data.aws_secretsmanager_secret.db_password.arn }
     ]
   }])
 }
